@@ -110,10 +110,10 @@ python session_manager.py
 Chạy các unit test không cần mở trình duyệt:
 
 ```bash
-python -m unittest -v test_reasoning.py
+python -m unittest discover -s tests -v
 ```
 
-Các tệp `test_navigation.py`, `test_video_complete.py`, `inspect_*.py`, `explore_*.py` và `run_unit2*.py` là script tích hợp/chẩn đoán. Chúng truy cập hệ thống thật, có thể thay đổi tiến độ học và phụ thuộc vào cấu trúc DOM hiện tại; chỉ chạy khi bạn hiểu rõ phạm vi của từng script.
+Các bài kiểm thử trong `tests/` chỉ kiểm tra logic suy luận cục bộ và không đăng nhập vào hệ thống thật.
 
 ## Cấu trúc dự án
 
@@ -123,10 +123,8 @@ Các tệp `test_navigation.py`, `test_video_complete.py`, `inspect_*.py`, `expl
 ├── settings.py           # Đọc cấu hình cục bộ từ biến môi trường
 ├── ai_reasoner.py        # Suy luận AI, xoay key và fallback provider
 ├── session_manager.py    # Đăng nhập, khôi phục và lưu phiên Playwright
-├── solver_engine.py      # Bộ giải cơ bản dùng cho các script cũ
-├── test_reasoning.py     # Unit test cho logic phân tích đáp án
-├── inspect_*.py          # Công cụ quan sát DOM/trạng thái màn hình
-├── run_unit2*.py         # Luồng thử nghiệm dành riêng cho Unit 2
+├── tests/
+│   └── test_reasoning.py # Unit test cho logic phân tích đáp án
 ├── requirements.txt      # Phiên bản dependency đã kiểm thử
 ├── .env.example          # Mẫu cấu hình an toàn để commit
 ├── session_state.json    # Phiên cục bộ, được Git bỏ qua
@@ -143,7 +141,7 @@ Trong quá trình chạy, agent ghi ảnh theo từng bước vào `run_artifact
 - **Phiên hết hạn hoặc bị đăng nhập ở thiết bị khác:** chạy lại `python session_manager.py`; agent sẽ thử đăng nhập mới và ghi lại `session_state.json`.
 - **Không kết nối được trang:** mặc định dự án dùng DNS của hệ thống. Chỉ đặt `ED_HOST_RESOLVER_RULES` trong `.env` khi môi trường của bạn thực sự cần ánh xạ host thủ công; xóa giá trị này nếu địa chỉ IP đã thay đổi.
 - **AI trả lỗi quota:** thêm key vào `GEMINI_BACKUP_KEYS` hoặc cấu hình một provider dự phòng.
-- **Selector không còn hoạt động:** giao diện English Discoveries có thể đã thay đổi. Dùng các script `inspect_*.py` và ảnh trong `run_artifacts/` để xác định selector mới.
+- **Selector không còn hoạt động:** giao diện English Discoveries có thể đã thay đổi. Chạy ở chế độ hiển thị và kiểm tra screenshot trong `run_artifacts/` để xác định selector cần cập nhật.
 
 ## Lưu ý bảo mật
 
